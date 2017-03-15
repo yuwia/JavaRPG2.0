@@ -11,6 +11,6 @@ public class MainClass
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setSize(512, 512);
         f.setResizable(false);
-        //Lets see if this does anything a;lsghjaa
+        //Lets see if this does anything a......
     }
 }
