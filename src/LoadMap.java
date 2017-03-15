@@ -7,7 +7,7 @@ public class LoadMap extends FileManager{
 	public LoadMap(String fileName){
 		int rows = 0;
 		charpos = new int[2];
-		scan = setUpScanner(getFile(fileName));
+		scan = setUpScanner(getFile("" + fileName));
 		try{
 			while(scan.hasNextLine()){
 				String something = scan.nextLine();

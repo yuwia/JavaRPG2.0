@@ -142,7 +142,7 @@ public class Character {
 		try
         {
 			//tries to grab the image for the character
-			image = ImageIO.read(getClass().getResourceAsStream("Character1.png"));
+			image = ImageIO.read(getClass().getResourceAsStream("nonClass/Character1.png"));
         }
 		catch(IOException e)
         {

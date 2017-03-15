@@ -18,7 +18,7 @@ public class BackgroundImage {
 	void image(){
 		try
         {
-			image = ImageIO.read(getClass().getResourceAsStream("map1.png"));
+			image = ImageIO.read(getClass().getResourceAsStream("nonClass/map1.png"));
         }
         
         catch(IOException e)

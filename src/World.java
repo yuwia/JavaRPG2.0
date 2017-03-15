@@ -18,7 +18,7 @@ public class World extends JPanel implements ActionListener
     //Class that contains the Character
     Character me = new Character(0,0);
     //Class that opens and reads the file holding all the data about the map
-    LoadMap map = new LoadMap("map1.txt");
+    LoadMap map = new LoadMap("nonClass/map1.txt");
     //Linked-list for the keys
     //Could be changed to an array stack to handle less processing power
     MultiPurposeStack keyArrayWASD;
@@ -35,7 +35,7 @@ public class World extends JPanel implements ActionListener
         //Class that is based around importing from csv files
         ImportCSV importer = new ImportCSV();
         //imports the terrain data for the map.
-        mapGrid = importer.importArray("map1.csv");
+        mapGrid = importer.importArray("nonClass/map1.csv");
         // gets the starting position on the map for the player
         int[] charPos = map.getCharPos();
         me = new Character(charPos[0] * 16, charPos[1] * 16);
