@@ -4,7 +4,8 @@ public class LoadMap extends FileManager{
 	Scanner scan;
 	MultiPurposeStack pear = new MultiPurposeStack();
 	int[] 	charpos;
-	int[][]		coins;
+	int[][]	coins,
+			mobs;
 	public LoadMap(String fileName){
 		int rows = 0;
 		charpos = new int[2];
@@ -41,14 +42,27 @@ public class LoadMap extends FileManager{
 				case "Coin":
 					String[] data = tokens[1].split(";");
 					coins = new int[data.length][];
-					int index = 0;
+					int coinindex = 0;
 					for(String apple: data) {
-						coins[index] = new int[3];
+						coins[coinindex] = new int[3];
 						String[] banana = apple.split(",");
-						coins[index][0] = Integer.parseInt(banana[0]);
-						coins[index][1] = Integer.parseInt(banana[1]);
-						coins[index][2] = Integer.parseInt(banana[2]);
-						index++;
+						coins[coinindex][0] = Integer.parseInt(banana[0]);
+						coins[coinindex][1] = Integer.parseInt(banana[1]);
+						coins[coinindex][2] = Integer.parseInt(banana[2]);
+						coinindex++;
+					}
+					break;
+				case "Mobs":
+					String[] horde = tokens[1].split(";");
+					mobs = new int[horde.length][];
+					int mobindex = 0;
+					for(String apple: horde) {
+						mobs[mobindex] = new int[3];
+						String[] banana = apple.split(",");
+						mobs[mobindex][0] = Integer.parseInt(banana[0]);
+						mobs[mobindex][1] = Integer.parseInt(banana[1]);
+						mobs[mobindex][2] = Integer.parseInt(banana[2]);
+						mobindex++;
 					}
 					break;
 				default:
@@ -63,5 +77,8 @@ public class LoadMap extends FileManager{
 	}
 	public int[][] getCoins(){
 		return coins;
+	}
+	public int[][] getMobs(){
+		return  mobs;
 	}
 }

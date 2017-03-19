@@ -5,9 +5,8 @@ public class Character extends Entity{
 	//gridy is the grid y location, buffdir is the limbo direction, dir is the active direction
 	//</editor-fold>
 
-
 	private World environment;
-	//checks to see if the block in from of the character is walkabl
+	//checks to see if the block in from of the character is walkable
 	//sets the direction buffer so the class can handle in between inputs
 	//This method is absolutely needed, no other implementation is possible
 	//This Constructor is for the Modified program
@@ -33,5 +32,8 @@ public class Character extends Entity{
     public void update(){
 	    super.update();
 	    checkCoins();
+    }
+    public void death(){
+
     }
 }

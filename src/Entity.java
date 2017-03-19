@@ -1,3 +1,5 @@
+import java.awt.*;
+
 /**
  * Created by Mark on 3/19/2017.
  */
@@ -150,5 +152,11 @@ public class Entity extends Object{
         move();
         updateDir();
         updateGridPos();
+    }
+    public boolean isDeath(){
+        if(health == 0){
+            return true;
+        }
+        return false;
     }
 }

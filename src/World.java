@@ -18,10 +18,20 @@ public class World extends JPanel implements ActionListener
     //<editor-fold desc=".">
     //The details grid of the map. As of present, the grid reads [y][x] instead of [x][y]
     //</editor-fold>
+
+    //<editor-fold desc=".">
+    /**
+     * Item Arrays for the map. Contains:
+     * mapGrid: Data For the Map
+     * coins: Loose Coins on the map that can be collected
+     * mobs: monsters on the map.
+     */
+    //</editor-fold>
     int[][][] mapGrid;
-    Coin[] abcde;
-    MultiPurposeStack coins = new MultiPurposeStack();
-    int coinId = 1;
+    MultiPurposeStack   coins = new MultiPurposeStack(),
+                        mobs = new MultiPurposeStack();
+    int                 coinId = 1,
+                        mobsId = 1;
     //<editor-fold desc=".">
     //Class that contains the background image
     //</editor-fold>
@@ -56,25 +66,15 @@ public class World extends JPanel implements ActionListener
         //imports the terrain data for the map.
         mapGrid = importer.importArray("nonClass/map1.csv");
         int midabcde[][] = map.getCoins();
-        abcde = new Coin[midabcde.length];
         for(int i = 0; i < midabcde.length; i++){
-            Coin banana = new Coin(i + 1);
-            banana.setGridx(midabcde[i][0]);
-            banana.setGridy(midabcde[i][1]);
-            banana.setValue(midabcde[i][2]);
-            banana.updatePosOnGrid();
-            mapGrid[midabcde[i][1]][midabcde[i][0]][2] = i + 1;
-            coins.addEnd(banana);
-            abcde[i] = banana;
-            coinId++;
+            addCoin(midabcde[i][0],midabcde[i][1],midabcde[i][2]);
+        }
+        midabcde = map.getMobs();
+        for(int i = 0; i < midabcde.length; i++){
+            addMob(midabcde[i][0],midabcde[i][1],midabcde[i][2]);
         }
 
-
-        // gets the starting position on the map for the player
-        int[] charPos = map.getCharPos();
-        me = new Character("nonClass/character.png",this, charPos[0], charPos[1], 1, 2, 1, 1);
-        //passes the terrain statistics to the character for movement
-        me.setMap(mapGrid);
+        spawnPlayer();
         //Allows to the master to attach the keystroke listener to the jpanel
         master = new MasterKeyListener(this);
         //assigns the pointer for the KeyArrayWASD so we can handel wasd input
@@ -82,8 +82,7 @@ public class World extends JPanel implements ActionListener
         t.start();
     }
     //paints all the pretty pictures
-    public void paint(Graphics g)
-    {
+    public void paint(Graphics g){
     	//Called so we don't break anything
     	super.paint(g);
     	//sets the background color to red so it stands out if we are breaking anything
@@ -102,14 +101,24 @@ public class World extends JPanel implements ActionListener
         if(inQuestion != null)
         g.drawImage(inQuestion.getCoinValue().getImage(), inQuestion.getCoinValue().getX(), inQuestion.getCoinValue().getY(), null);
 
+        inQuestion = mobs.getHead();
+        while(inQuestion != mobs.getFoot()){
+            g.drawImage(inQuestion.getMonsterValue().getImage(), inQuestion.getMonsterValue().getX(), inQuestion.getMonsterValue().getY(), null);
+            inQuestion = inQuestion.getChild();
+        }
+        if(inQuestion != null)
+            g.drawImage(inQuestion.getMonsterValue().getImage(), inQuestion.getMonsterValue().getX(), inQuestion.getMonsterValue().getY(), null);
+
         g.drawImage(me.getImage(),me.getX(),me.getY(),null);
 
     }
     //Method called by the ActionListener every time the timer completes its cycle
     //Still needs to be touched up
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e){
     	//checks to see if there are any keys that in the linked-list keyArrayWASD
+        /**
+         * move the code after this into the Character Class
+         */
     	if(!keyArrayWASD.isEmpty()){
     		//switch statement gets the last key that was pressed and passes
     		//the direction info to the Character
@@ -134,17 +143,35 @@ public class World extends JPanel implements ActionListener
 			me.setBuffDir(-1);
 		}
 
-    	me.update();
+		if(!me.isDeath()) {
+            me.update();
+        }else{
+    	    spawnPlayer();
+        }
     	//Forces the System to redraw the screen
     	repaint();
     }
     public void addCoin(int gx, int gy, int value){
         Coin apple = new Coin(coinId);
-        coinId++;
+        mapGrid[gy][gx][2] = coinId;
         apple.setGridy(gy);
         apple.setGridx(gx);
         apple.setValue(value);
         apple.updatePosOnGrid();
         coins.addEnd(apple);
+        coinId++;
+    }
+    public void addMob(int gx, int gy, int type){
+        Monster monster = new Monster(gx, gy, type, mobsId);
+        monster.updatePosOnGrid();
+        mobs.addBeginning(monster);
+        mobsId++;
+    }
+    public void spawnPlayer(){
+        // gets the starting position on the map for the player
+        int[] charPos = map.getCharPos();
+        me = new Character("nonClass/character.png",this, charPos[0], charPos[1], 2, 2, 1, 1);
+        //passes the terrain statistics to the character for movement
+        me.setMap(mapGrid);
     }
 }

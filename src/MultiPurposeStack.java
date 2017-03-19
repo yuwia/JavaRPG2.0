@@ -83,6 +83,26 @@ public class MultiPurposeStack {
 		}
 		length++;
 	}
+	public void addBeginning(Monster value){
+		//creates a new node and assigns the string value to the input value
+		//then assigns the parent pointer of the old head to the new node
+		// and changes the head pointer to point to the new node
+		//increases the length of the master class
+		Node newNode = new Node();
+		newNode.setMonsterValue(value);
+		newNode.setParent(null);
+
+		if(isEmpty()){
+			newNode.setChild(null);
+			head = newNode;
+			foot = newNode;
+		}else{
+			newNode.setChild(head);
+			head.setParent(newNode);
+			head = newNode;
+		}
+		length++;
+	}
 	public void addEnd(int value){
 		//creates a new node and assigns the integer value to the input value
 		//then assigns the child pointer of the old foot to the new node
@@ -130,6 +150,26 @@ public class MultiPurposeStack {
 		//increases the length of the master class
 		Node newNode = new Node();
 		newNode.setCoinValue(value);
+		newNode.setChild(null);
+
+		if(isEmpty()){
+			newNode.setParent(null);
+			head = newNode;
+			foot = newNode;
+		}else{
+			newNode.setParent(foot);
+			foot.setChild(newNode);
+			foot = newNode;
+		}
+		length++;
+	}
+	public void addEnd(Monster value){
+		//creates a new node and assigns the string value to the input value
+		//then assigns the child pointer of the old foot to the new node
+		//and changes the foot pointer to point to the new node
+		//increases the length of the master class
+		Node newNode = new Node();
+		newNode.setMonsterValue(value);
 		newNode.setChild(null);
 
 		if(isEmpty()){
@@ -309,6 +349,7 @@ class Node{
 	int intValue;
 	String stringValue;
 	Coin coinValue;
+	Monster monsterValue;
 	Node child, parent;
 	
 	public void Destory(){
@@ -353,6 +394,12 @@ class Node{
 	}
 	public Coin getCoinValue(){
 		return coinValue;
+	}
+	public Monster getMonsterValue(){
+		return monsterValue;
+	}
+	public void setMonsterValue(Monster monster){
+		monsterValue = monster;
 	}
 	//*****//
 }
