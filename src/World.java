@@ -72,7 +72,7 @@ public class World extends JPanel implements ActionListener
 
         // gets the starting position on the map for the player
         int[] charPos = map.getCharPos();
-        me = new Character(this, charPos[0], charPos[1], 1, 1, 2, 1);
+        me = new Character("nonClass/character.png",this, charPos[0], charPos[1], 1, 2, 1, 1);
         //passes the terrain statistics to the character for movement
         me.setMap(mapGrid);
         //Allows to the master to attach the keystroke listener to the jpanel

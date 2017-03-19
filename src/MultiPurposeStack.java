@@ -263,7 +263,6 @@ public class MultiPurposeStack {
 		length--;
 	}
 	public boolean deleteCoinIndex(int index){
-		System.out.print("Called");
 		if(length == 1 && head.getCoinValue().getIndex() == index){
 			purge();
 			return true;
@@ -279,7 +278,6 @@ public class MultiPurposeStack {
 				return true;
 			}
 			inQuestion = inQuestion.getChild();
-			System.out.print("CalledHere");
 		}
 		if(inQuestion.getCoinValue().getIndex() == index){
 			foot = inQuestion.getParent();
