@@ -26,6 +26,12 @@ public class FileManager {
 		return file;
 	}
 	//this method sets up a scanner to read from the target file
+
+	/**
+	 * 
+	 * @param file
+	 * @return
+	 */
 	Scanner setUpScanner(File file){
 		//initiates a null Scanner class
 		Scanner input = null;

@@ -63,6 +63,46 @@ public class MultiPurposeStack {
 		}
 		length++;
 	}
+	public void addBeginning(Coin value){
+		//creates a new node and assigns the string value to the input value
+				//then assigns the parent pointer of the old head to the new node
+				//and changes the head pointer to point to the new node
+				//increases the length of the master class
+		Node newNode = new Node();
+		newNode.setCoinValue(value);
+		newNode.setParent(null);
+
+		if(isEmpty()){
+			newNode.setChild(null);
+			head = newNode;
+			foot = newNode;
+		}else{
+			newNode.setChild(head);
+			head.setParent(newNode);
+			head = newNode;
+		}
+		length++;
+	}
+	public void addBeginning(Monster value){
+		//creates a new node and assigns the string value to the input value
+		//then assigns the parent pointer of the old head to the new node
+		// and changes the head pointer to point to the new node
+		//increases the length of the master class
+		Node newNode = new Node();
+		newNode.setMonsterValue(value);
+		newNode.setParent(null);
+
+		if(isEmpty()){
+			newNode.setChild(null);
+			head = newNode;
+			foot = newNode;
+		}else{
+			newNode.setChild(head);
+			head.setParent(newNode);
+			head = newNode;
+		}
+		length++;
+	}
 	public void addEnd(int value){
 		//creates a new node and assigns the integer value to the input value
 		//then assigns the child pointer of the old foot to the new node
@@ -92,6 +132,46 @@ public class MultiPurposeStack {
 		newNode.setStringValue(value);
 		newNode.setChild(null);
 		
+		if(isEmpty()){
+			newNode.setParent(null);
+			head = newNode;
+			foot = newNode;
+		}else{
+			newNode.setParent(foot);
+			foot.setChild(newNode);
+			foot = newNode;
+		}
+		length++;
+	}
+	public void addEnd(Coin value){
+		//creates a new node and assigns the string value to the input value
+		//then assigns the child pointer of the old foot to the new node
+		//and changes the foot pointer to point to the new node
+		//increases the length of the master class
+		Node newNode = new Node();
+		newNode.setCoinValue(value);
+		newNode.setChild(null);
+
+		if(isEmpty()){
+			newNode.setParent(null);
+			head = newNode;
+			foot = newNode;
+		}else{
+			newNode.setParent(foot);
+			foot.setChild(newNode);
+			foot = newNode;
+		}
+		length++;
+	}
+	public void addEnd(Monster value){
+		//creates a new node and assigns the string value to the input value
+		//then assigns the child pointer of the old foot to the new node
+		//and changes the foot pointer to point to the new node
+		//increases the length of the master class
+		Node newNode = new Node();
+		newNode.setMonsterValue(value);
+		newNode.setChild(null);
+
 		if(isEmpty()){
 			newNode.setParent(null);
 			head = newNode;
@@ -166,7 +246,7 @@ public class MultiPurposeStack {
 	//this can probably be written in a better fashion. like with a for loop
 	public void deleteValue(int value){
 		Node inQuestion = head;
-		if(length == 1){
+		if(length == 1 && head.getIntValue() == value){
 			purge();
 			return;
 		}
@@ -201,9 +281,13 @@ public class MultiPurposeStack {
 		length = 0;
 	}
 	public void deleteValue(String value){
+		if(length == 1 && head.getStringValue().equals(value)){
+			purge();
+			return;
+		}
 		Node inQuestion = head;
 		while(!inQuestion.equals(foot)){
-			if(inQuestion.getStringValue() == value){
+			if(inQuestion.getStringValue().equals(value)){
 				if(inQuestion.equals(head)){
 					head = inQuestion.getChild();
 				}
@@ -212,14 +296,42 @@ public class MultiPurposeStack {
 			}
 			inQuestion = inQuestion.getChild();
 		}
-		if(inQuestion.getStringValue() == value){
+		if(inQuestion.getStringValue().equals(value)){
 			foot = inQuestion.getParent();
 			inQuestion.Destory();
 		}
 		length--;
 	}
+	public boolean deleteCoinIndex(int index){
+		if(length == 1 && head.getCoinValue().getIndex() == index){
+			purge();
+			return true;
+		}
+		Node inQuestion = head;
+		while(inQuestion != foot){
+			if(inQuestion.getCoinValue().getIndex() == index){
+				if(inQuestion == head){
+					head = inQuestion.getChild();
+				}
+				inQuestion.Destory();
+				length--;
+				return true;
+			}
+			inQuestion = inQuestion.getChild();
+		}
+		if(inQuestion.getCoinValue().getIndex() == index){
+			foot = inQuestion.getParent();
+			inQuestion.Destory();
+			length--;
+			return true;
+		}
+		return false;
+	}
 	public Node getHead(){
 		return head;
+	}
+	public Node getFoot(){
+		return  foot;
 	}
 	public void displayValues(){
 		Node inque = head;
@@ -236,6 +348,8 @@ public class MultiPurposeStack {
 class Node{
 	int intValue;
 	String stringValue;
+	Coin coinValue;
+	Monster monsterValue;
 	Node child, parent;
 	
 	public void Destory(){
@@ -274,6 +388,18 @@ class Node{
 	}
 	public void setParent(Node parent) {
 		this.parent = parent;
+	}
+	public void setCoinValue(Coin coin){
+		coinValue = coin;
+	}
+	public Coin getCoinValue(){
+		return coinValue;
+	}
+	public Monster getMonsterValue(){
+		return monsterValue;
+	}
+	public void setMonsterValue(Monster monster){
+		monsterValue = monster;
 	}
 	//*****//
 }
