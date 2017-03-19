@@ -1,30 +1,25 @@
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+public class Character extends Object{
 
-import javax.imageio.ImageIO;
-
-public class Character {
-
-	//Character image
-	private BufferedImage image;
-	private int speed = 2;
-	//x is the x pixel location, y is the y pixel location, gridx is the x grid location, 
-	//gridy is the grid y location, buffdir is the limbo direction, dir is the active direction 
-	private int x = 0,
-		y = 0,
-		gridx = 0,
-    	gridy = 0,
-    	buffDir,
-    	dir;
+	//<editor-fold desc=".">
+	//x is the x pixel location, y is the y pixel location, gridx is the x grid location,
+	//gridy is the grid y location, buffdir is the limbo direction, dir is the active direction
+	//</editor-fold>
+	private int buffDir,
+				health,
+				agility,
+				power,
+				speed,
+    			dir = -1;
+	private World environment;
 	//map is the terrain map for the currently loaded map
-	private int[][] map;
+	private int[][][] map;
 	//inGrid booleans is true when the character is locked into a grid square
 	private boolean inGrid = true;
 	//handles the active direction and the grid locking position
 	//the buffDir variable allows us to hold and attempts to modify the active direction in limbo
 	//until the character has locked into a grid square
 	public void updateDir(){
-		if((x % 16 == 0) && (y % 16 == 0)){
+		if((getX() % 16 == 0) && (getY() % 16 == 0)){
 			inGrid = true;
 			dir = buffDir;
 		}else{
@@ -32,33 +27,33 @@ public class Character {
 		}
 	}
 	//updates the grid position for the character
+
+
 	public void updateGridPos(){
 		//changes the current gird position to the grid position that the character is moving to
 		switch(dir){
 		case 0:
 			//sets the target grid position to the one above
-			gridy = (int)Math.floor((double)y/16);
+			setGridy((int)Math.floor((double)getY()/16));
 			break;
 		case 1:
 			//sets the target grid position to the one to the right
-			gridx = (int)Math.ceil((double)x/16);
+			setGridx((int)Math.ceil((double)getX()/16));
 			break;
 		case 2:
 			//sets the target grid position to the one below
-			gridy = (int)Math.ceil((double)y/16);
+			setGridy((int)Math.ceil((double)getY()/16));
 			break;
 		case 3:
 			//sets the target grid position to the one to the left
-			gridx = (int)Math.floor((double)x/16);
+			setGridx((int)Math.floor((double)getX()/16));
 			break;
 			default:
 				break;
 		}
-		//this line of code is here for debugging purposes
-		System.out.println(gridx + ", " + gridy);
 	}
 	//allows the world class to pass the terrain map
-	public void setMap(int[][] map) {
+	public void setMap(int[][][] map) {
 		this.map = map;
 	}
 	public void move(){
@@ -71,19 +66,19 @@ public class Character {
 				break;
 			case 0:
 				//Character moves upward
-				y-= speed;
+				setY(getY() - speed);
 				break;
 			case 1:
 				//Character moves right
-				x+= speed;
+				setX(getX() + speed);
 				break;
 			case 2:
 				//Character moves down
-				y+= speed;
+				setY(getY() + speed);
 				break;
 			case 3:
 				//Character moves left
-				x-= speed;
+				setX(getX() - speed);
 				break;
 			}
 		}
@@ -98,13 +93,13 @@ public class Character {
 		case 0:
 			//there is an offset because of the pictures height. this needs to be fixed ASAP.
 			//this goes for all the comparison statements in this method
-			return (map[gridy][gridx] == 0);
+			return (map[getGridy() - 1][getGridx()][0] == 0);
 		case 1:
-			return (map[gridy + 1][gridx + 1] == 0);
+			return (map[getGridy()][getGridx() + 1][0] == 0);
 		case 2:
-			return (map[gridy + 2][gridx] == 0);
+			return (map[getGridy() + 1][getGridx()][0] == 0);
 		case 3:
-			return (map[gridy + 1][gridx - 1] == 0);
+			return (map[getGridy()][getGridx() - 1][0] == 0);
 		}
 		return false;
 	}
@@ -113,42 +108,39 @@ public class Character {
 	public void setBuffDir(int dir) {
 		this.buffDir = dir;
 	}
-	//returns the x cords so they can be painted
-	public int getX() {
-		return x;
-	}
-	//returns the y cords so they can be painted
-	public int getY() {
-		return y;
-	}
-	//returns the image to the world class to draw it out
-	//this could be implemented in a local method to cut down on methods
-	public BufferedImage getImage() {
-		return image;
-	}
-	//constructor that allows us to set the x and y positions for the character and updates its grid position
-	public Character(int xx, int yy){
+	public Character(World planet,int xx, int yy, int hearts, int agl, int spe, int pow) {
+		environment = planet;
 		//updates the x and y pixel cords
-		x = xx;
-		y = yy;
-		//updates the grid position in the x and the why
-		gridx= xx/16;
-		gridy= yy/16;
+		//updates the grid position in the x and the y
+		setGridx(xx);
+		setGridy(yy);
+		setX(xx * 16);
+		setY(yy * 16);
+
+
 		//calls the method that loads the image
-		image();
+		setImage("nonClass/character.png");
+
+		//Takes the input from the constructor and populates the integers
+		speed = spe;
+		agility = agl;
+		health = hearts;
+		power = pow;
+	}
+
+	public void checkCoins(){
+		if(map[getGridy()][getGridx()][2] != 0) {
+			if(environment.coins.deleteCoinIndex(map[getGridy()][getGridx()][2])){
+				map[getGridy()][getGridx()][2] = 0;
+			}
+		}
 	}
 	//this method retrieves all the images for the class
-	void image(){
-		try
-        {
-			//tries to grab the image for the character
-			image = ImageIO.read(getClass().getResourceAsStream("nonClass/Character1.png"));
-        }
-		catch(IOException e)
-        {
-			//interrupt statement if the image can't be found
-			//contingency plans need to be put here
-            e.printStackTrace();
-        }
+
+	public void update(){
+		move();
+		updateDir();
+		updateGridPos();
+		checkCoins();
 	}
 }

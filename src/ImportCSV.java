@@ -14,7 +14,7 @@ public class ImportCSV extends FileManager{
 		//so can be called by the map loader
 		//importArray();
 	}
-	public int[][] importArray(String fileName){		
+	public int[][][] importArray(String fileName){
 		//This section of the code needs to be modified
 		//The import Array needs to accept a string value for the file name
 		//String fileName = "map.csv";
@@ -24,7 +24,7 @@ public class ImportCSV extends FileManager{
 		//gatherArray takes the information from the file and processes it into an array
 		return gatherArray(setUpScanner(getFile(fileName)));
 	}
-	int[][] gatherArray(Scanner input){
+	int[][][] gatherArray(Scanner input){
 		//if statement immediately kills the array if there is no file
 		if(input == null){
 			return null;
@@ -37,7 +37,7 @@ public class ImportCSV extends FileManager{
 		//index is there to direct the data when pear2 is sorting through the columns
 		int rows = 0, index = 0;
 		// array is the 2d array that will be return;
-		int[][] array = null;
+		int[][][] array = null;
 		//gathers all the rows from the file
 		while(input.hasNextLine()){
 			String something = input.nextLine();
@@ -45,11 +45,11 @@ public class ImportCSV extends FileManager{
 			rows++;
 		}
 		//initializes the number of rows into the array
-		array = new int[rows][];
+		array = new int[rows][][];
 		//while loop takes each node of pear1, breaks it into a char array,
 		//and adds each char to pear2 is it isn't a comma
 		//this only works if the integers are single digit
-		//array[] is then alloted the appropriate size array for the length of pear
+		//array[] is then allotted the appropriate size array for the length of pear
 		//then array is populated with the values from pear2 and then pear2 is emptied
 		while(!pear.isEmpty()){
 			String something2 = pear.getHead().getStringValue();
@@ -58,10 +58,11 @@ public class ImportCSV extends FileManager{
 				if(some[i] != ',')
 					pear2.addEnd(String.valueOf(some[i]));
 			}
-			array[index] = new int[pear2.getLength()];
+			array[index] = new int[pear2.getLength()][];
 			int microIndex = 0;
 			while(!pear2.isEmpty()){
-				array[index][microIndex] = Integer.parseInt(pear2.getHead().getStringValue());
+				array[index][microIndex]  = new int[5];
+				array[index][microIndex][0] = Integer.parseInt(pear2.getHead().getStringValue());
 				pear2.deleteBeginning();
 				microIndex++;
 			}
