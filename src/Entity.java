@@ -154,7 +154,7 @@ public class Entity extends Object{
         updateGridPos();
     }
     public boolean isDeath(){
-        if(health == 0){
+        if(health <= 0){
             return true;
         }
         return false;

@@ -28,12 +28,50 @@ public class Character extends Entity{
 			}
 		}
 	}
+	public void attackMonster(){
+	    if(getMap()[getGridy()][getGridx()][1] != 0){
+	        System.out.print(getMap());
+	        System.out.print(getMap()[getGridy()][getGridx()][1]);
+            attack(environment.mobs.getNodeWithValue(getMap()[getGridy()][getGridx()][1]).getMonsterValue());
+            switch (getDir()){
+                case 0:
+                    setY(getY() + 16);
+                    break;
+                case 1:
+                    setX(getX() - 16);
+                    break;
+                case 2:
+                    setY(getY() - 16);
+                    break;
+                case 3:
+                    setX(getX() + 16);
+                    break;
+                default:
+                    System.out.print("This should never ever run");
+                    break;
+            }
+        }
+    }
 	@Override
     public void update(){
 	    super.update();
 	    checkCoins();
+	    attackMonster();
     }
-    public void death(){
-
+    public void attack(Monster monster) {
+        if (monster.getAgility() > getAgility()) {
+            setHealth(getHealth()- monster.getPower());
+            if(!isDeath()) {
+                monster.setHealth(monster.getHealth() - getPower());
+            }
+        }else if(monster.getAgility() < getAgility()){
+            monster.setHealth(monster.getHealth() - getPower());
+            if(!monster.isDeath()) {
+                setHealth(getHealth() - monster.getPower());
+            }
+        }else{
+            monster.setHealth(monster.getHealth() - getPower());
+            setHealth(getHealth()- monster.getPower());
+        }
     }
 }

@@ -215,14 +215,38 @@ public class MultiPurposeStack {
 			length--;
 		}
 	}
+	public boolean deleteNode(Node node){
+		Node inQuestion = getHead();
+		if(getFoot() == node){
+			deleteEnd();
+			length--;
+			return true;
+		}
+		if(getHead() == node){
+			deleteBeginning();
+			length--;
+			return true;
+		}
+		while(inQuestion != getFoot()){
+			if(node == inQuestion){
+				inQuestion.Destory();
+				length--;
+				return true;
+			}
+			inQuestion = inQuestion.getChild();
+		}
+		return false;
+	}
 	public void deleteAt(int index){
 		if(!isEmpty()){
 			if(index == 1){
 				deleteBeginning();
+				length--;
 				return;
 			}
 			if(index == length){
 				deleteEnd();
+				length--;
 				return;
 			}
 		
@@ -242,6 +266,19 @@ public class MultiPurposeStack {
 			}
 		}
 		return que;
+	}
+	public Node getNodeWithValue(int id){
+		Node inQuestion = getHead();
+		while (inQuestion != getFoot()){
+			if(inQuestion.getMonsterValue().getId() == id){
+				return inQuestion;
+			}
+			inQuestion = inQuestion.getChild();
+		}
+		if(inQuestion.getMonsterValue().getId() == id){
+			return inQuestion;
+		}
+		return null;
 	}
 	//this can probably be written in a better fashion. like with a for loop
 	public void deleteValue(int value){
@@ -360,6 +397,9 @@ class Node{
 			child.setParent(null);
 		}else if(parent != null){
 			parent.setChild(null);
+		}else{
+			child = null;
+			parent = null;
 		}
 		child = null;
 		parent = null;
