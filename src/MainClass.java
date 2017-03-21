@@ -4,13 +4,12 @@ public class MainClass
 {
     public static void main(String args [])
     {
-        JFrame f = new JFrame();
-        World s = new World();
-        f.add(s);
-        f.setVisible(true);
+        JFrame f = new JFrame("Java RPG");
+
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setSize(512, 512);
-        f.setResizable(false);
-        //Lets see if this does anything a......
+        f.setResizable(true);
+        Menu menu = new Menu(f);
+        menu.addButtons();
     }
 }
