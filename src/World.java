@@ -65,6 +65,7 @@ public class World extends JPanel implements ActionListener
         ImportCSV importer = new ImportCSV();
         //imports the terrain data for the map.
         mapGrid = importer.importArray("nonClass/map1.csv");
+        System.out.println(mapGrid);
         int midabcde[][] = map.getCoins();
         for(int i = 0; i < midabcde.length; i++){
             addCoin(midabcde[i][0],midabcde[i][1],midabcde[i][2]);
@@ -142,13 +143,7 @@ public class World extends JPanel implements ActionListener
     	}else if(keyArrayWASD.isEmpty()){
 			me.setBuffDir(-1);
 		}
-
-		if(!me.isDeath()) {
-            me.update();
-        }else{
-    	    spawnPlayer();
-        }
-    	//Forces the System to redraw the screen
+        cheackDeath();
     	repaint();
     }
     public void addCoin(int gx, int gy, int value){
@@ -163,6 +158,7 @@ public class World extends JPanel implements ActionListener
     }
     public void addMob(int gx, int gy, int type){
         Monster monster = new Monster(gx, gy, type, mobsId);
+        mapGrid[gy][gx][1] = mobsId;
         monster.updatePosOnGrid();
         mobs.addBeginning(monster);
         mobsId++;
@@ -174,4 +170,30 @@ public class World extends JPanel implements ActionListener
         //passes the terrain statistics to the character for movement
         me.setMap(mapGrid);
     }
+
+     public void cheackDeath(){
+        if(!me.isDeath()) {
+            me.update();
+        }else{
+            spawnPlayer();
+        }
+        Node inQuestion;
+        inQuestion = mobs.getHead();
+        while(inQuestion != mobs.getFoot()){
+            Monster monster = inQuestion.getMonsterValue();
+            if(monster.isDeath()){
+                mapGrid[monster.getGridy()][monster.getGridy()][1] = 0;
+                mobs.deleteNode(inQuestion);
+
+            }
+            inQuestion = inQuestion.getChild();
+        }
+        if(inQuestion != null) {
+            if (inQuestion.getMonsterValue().isDeath()) {
+                mobs.deleteNode(inQuestion);
+                mapGrid[inQuestion.getMonsterValue().getGridy()][inQuestion.getMonsterValue().getGridy()][1] = 0;
+            }
+        }
+    }
+
 }

@@ -3,7 +3,7 @@
  */
 public class Monster extends Entity{
 
-    int index;
+    private int index;
     public Monster(int gx, int gy, int type, int id){
         index = id;
         setGridx(gx);
