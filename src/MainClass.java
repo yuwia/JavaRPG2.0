@@ -8,7 +8,7 @@ public class MainClass
 
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setSize(512, 512);
-        f.setResizable(true);
+        f.setResizable(false);
         Menu menu = new Menu(f);
         menu.addButtons();
     }
