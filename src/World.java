@@ -65,7 +65,6 @@ public class World extends JPanel implements ActionListener
         ImportCSV importer = new ImportCSV();
         //imports the terrain data for the map.
         mapGrid = importer.importArray("nonClass/map1.csv");
-        System.out.println(mapGrid);
         int midabcde[][] = map.getCoins();
         for(int i = 0; i < midabcde.length; i++){
             addCoin(midabcde[i][0],midabcde[i][1],midabcde[i][2]);
@@ -177,22 +176,23 @@ public class World extends JPanel implements ActionListener
         }else{
             spawnPlayer();
         }
-        Node inQuestion;
+        Node inQuestion = null;
         inQuestion = mobs.getHead();
+        Monster monster = null;
         while(inQuestion != mobs.getFoot()){
-            Monster monster = inQuestion.getMonsterValue();
+            monster = inQuestion.getMonsterValue();
             if(monster.isDeath()){
-                mapGrid[monster.getGridy()][monster.getGridy()][1] = 0;
-                mobs.deleteNode(inQuestion);
-
+                mapGrid[monster.getGridy()][monster.getGridx()][1] = 0;
+                inQuestion = inQuestion.getChild();
+                mobs.deleteNode(inQuestion.getParent());
+            }else{
+                inQuestion = inQuestion.getChild();
             }
-            inQuestion = inQuestion.getChild();
         }
-        if(inQuestion != null) {
-            if (inQuestion.getMonsterValue().isDeath()) {
-                mobs.deleteNode(inQuestion);
-                mapGrid[inQuestion.getMonsterValue().getGridy()][inQuestion.getMonsterValue().getGridy()][1] = 0;
-            }
+
+        if (mobs.getFoot().getMonsterValue().isDeath()) {
+            mapGrid[inQuestion.getMonsterValue().getGridy()][inQuestion.getMonsterValue().getGridx()][1] = 0;
+            mobs.deleteNode(inQuestion);
         }
     }
 
