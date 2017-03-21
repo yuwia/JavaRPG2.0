@@ -30,8 +30,8 @@ public class Character extends Entity{
 	}
 	public void attackMonster(){
 	    if(getMap()[getGridy()][getGridx()][1] != 0){
-	        System.out.print(getMap());
-	        System.out.print(getMap()[getGridy()][getGridx()][1]);
+	        //System.out.print(getMap());
+	        //System.out.print(getMap()[getGridy()][getGridx()][1]);
             attack(environment.mobs.getNodeWithValue(getMap()[getGridy()][getGridx()][1]).getMonsterValue());
             switch (getDir()){
                 case 0:

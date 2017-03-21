@@ -219,16 +219,14 @@ public class MultiPurposeStack {
 		Node inQuestion = getHead();
 		if(getFoot() == node){
 			deleteEnd();
-			length--;
 			return true;
 		}
 		if(getHead() == node){
 			deleteBeginning();
-			length--;
 			return true;
 		}
 		while(inQuestion != getFoot()){
-			if(node == inQuestion){
+			if(inQuestion == node){
 				inQuestion.Destory();
 				length--;
 				return true;
@@ -370,14 +368,13 @@ public class MultiPurposeStack {
 	public Node getFoot(){
 		return  foot;
 	}
-	public void displayValues(){
+	public void displayMonserValues(){
 		Node inque = head;
-		while(!inque.equals(foot)){
-			System.out.print(head.getIntValue() + ",");
-			inque = head.getChild();
+		while(inque != (foot)){
+			System.out.print(inque.getMonsterValue().getId() + ",");
+			inque = inque.getChild();
 		}
-		System.out.println(head.getIntValue() + ",");
-		inque = head.getChild();
+		System.out.println(foot.getMonsterValue().getId());
 	}
 	
 }
@@ -403,6 +400,14 @@ class Node{
 		}
 		child = null;
 		parent = null;
+	}
+	public void displayContent(){
+		System.out.println(intValue);
+		System.out.println(stringValue);
+		System.out.println(coinValue);
+		System.out.println(monsterValue);
+		System.out.println();
+
 	}
 	//Setters and Getters*****
 	public String getStringValue() {
