@@ -1,16 +1,20 @@
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
  * Created by Mark on 3/19/2017.
  */
-public class Object {
+public class Object extends JComponent {
     private BufferedImage image;
-    private int x = 0,
-            y = 0,
-            gridx = 0,
-            gridy = 0;
+    private int x = 0;
+    private int y = 0;
+    private int xImageOffset = 0;
+    private int yImageOffset = 0;
+    private int gridx = 0;
+    private int gridy = 0;
+
     public Object(){
 
     }
@@ -30,13 +34,13 @@ public class Object {
         }
     }
     public int getX() {
-        return x;
+        return x - xImageOffset;
     }
     public void setX(int x) {
         this.x = x;
     }
     public int getY() {
-        return y;
+        return y - yImageOffset;
     }
     public void setY(int y) {
         this.y = y;
@@ -52,6 +56,18 @@ public class Object {
     }
     public void setGridy(int gridy) {
         this.gridy = gridy;
+    }
+    public void setxImageOffset(int xImageOffset) {
+        this.xImageOffset = xImageOffset;
+    }
+    public void setyImageOffset(int yImageOffset) {
+        this.yImageOffset = yImageOffset;
+    }
+    public int getxImageOffset(){
+        return  xImageOffset;
+    }
+    public int getyImageOffset(){
+        return xImageOffset;
     }
     public void updatePosOnGrid(){
         x = gridx*16;
