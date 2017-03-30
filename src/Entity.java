@@ -1,4 +1,4 @@
-import java.awt.*;
+
 
 /**
  * Created by Mark on 3/19/2017.
@@ -28,6 +28,9 @@ public class Entity extends Object{
     }
     public Entity(){
 
+    }
+    public boolean isInGrid(){
+        return inGrid;
     }
     public void updateDir(){
         if((getX() % 16 == 0) && (getY() % 16 == 0)){
@@ -63,7 +66,7 @@ public class Entity extends Object{
     public void move(){
         //the first if statement hands when the character is in mid-step
         //the second if statement checks to see if the block is open to walk when the player is inGrid
-        if(inGrid == false || (inGrid == true && isClear() == true)){
+        if(!inGrid || (inGrid && isClear())){
             switch(dir){
                 case -1:
                     //Character doesn't move

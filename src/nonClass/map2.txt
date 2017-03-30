@@ -1,0 +1,7 @@
+//:The Start Position of the Character For the map. Only two integers can be accepted. a comma separates the x coordinate from the y coordinate. The format is as follows: (x,y) . If the coordinates are in an unwalkable area, the program will most likely break dn there are no fail safes for this
+Start:3,5
+//:Spawn Coins for the Map. only Any number of coins will be accepted. The format for the coins has 3 numbers. (x, y, v) where x is the x grid position, y is the y grid position, and v is the value of the coin. Coins will spawn in walls and will be seen but will never be collected
+Coin:4,5,1;5,6,2;6,5,3
+//:(x,y,t) Monsters . x is the x grid position, y is the y grid position, t is the monster type.
+Mobs:7,7,0;8,8,2;9,9,0;10,10,0
+//:Exit Location

@@ -6,12 +6,14 @@ public class Character extends Entity{
 	//</editor-fold>
 
 	private World environment;
+	private int sightRange = 0;
 	//checks to see if the block in from of the character is walkable
 	//sets the direction buffer so the class can handle in between inputs
 	//This method is absolutely needed, no other implementation is possible
 	//This Constructor is for the Modified program
-	public Character(String image, World planet, int gridx, int gridy, int health, int speed, int agility, int power){
+	public Character(String image, World planet, int gridx, int gridy, int health, int speed, int agility, int power, int sight){
         environment = planet;
+        sightRange = sight;
         setImage(image);
         setGridx(gridx);
         setGridy(gridy);
@@ -22,17 +24,15 @@ public class Character extends Entity{
         updatePosOnGrid();
     }
 	public void checkCoins(){
-		if(getMap()[getGridy()][getGridx()][2] != 0) {
-			if(environment.coins.deleteCoinIndex(getMap()[getGridy()][getGridx()][2])){
-                getMap()[getGridy()][getGridx()][2] = 0;
+		if(getMap()[getGridy()][getGridx()][3] != 0) {
+			if(environment.coins.deleteCoinIndex(getMap()[getGridy()][getGridx()][3])){
+                getMap()[getGridy()][getGridx()][3] = 0;
 			}
 		}
 	}
 	public void attackMonster(){
-	    if(getMap()[getGridy()][getGridx()][1] != 0){
-	        //System.out.print(getMap());
-	        //System.out.print(getMap()[getGridy()][getGridx()][1]);
-            attack(environment.mobs.getNodeWithValue(getMap()[getGridy()][getGridx()][1]).getMonsterValue());
+	    if(getMap()[getGridy()][getGridx()][2] != 0){
+            attack(environment.mobs.getNodeWithValue(getMap()[getGridy()][getGridx()][2]).getMonsterValue());
             switch (getDir()){
                 case 0:
                     setY(getY() + 16);
@@ -55,6 +55,7 @@ public class Character extends Entity{
 	@Override
     public void update(){
 	    super.update();
+	    environment.updateOffset();
 	    checkCoins();
 	    attackMonster();
     }
@@ -73,5 +74,11 @@ public class Character extends Entity{
             monster.setHealth(monster.getHealth() - getPower());
             setHealth(getHealth()- monster.getPower());
         }
+    }
+    public int getSightRange(){
+        return sightRange;
+    }
+    public void setSightRange(int sight){
+        sightRange = sight;
     }
 }
